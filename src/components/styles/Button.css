@@ -1,0 +1,18 @@
+.button {
+
+    display: inline-block; /* важно для ссылок */
+    flex: 1;
+    padding: 10px;
+    border-radius: 9999px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none; /* сброс подчеркивания для ссылок */
+    color: inherit;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    opacity: 0.9;
+}

@@ -1,0 +1,8 @@
+.wide-button-calendar {
+    background-color: #ddd;
+    border-radius: 20px;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    width: 400px;
+}

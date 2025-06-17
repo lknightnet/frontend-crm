@@ -1,0 +1,69 @@
+.modal-overlay-timer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+}
+
+.modal-timer {
+    position: absolute;
+    width: 400px;
+    background-color: #C4C4C4;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    font-size: 15px;
+    position: relative; /* Добавь, чтобы позиционировать timer-text относительно модального окна */
+}
+
+.timer-text {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: 600;
+    font-family: monospace;
+
+}
+
+.workday-text{
+    font-size: 15px;
+}
+
+.workday-text-tasks{
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.workday-button{
+    margin-top: 0.3rem;
+    background-color: #848484;
+    color: white;
+    border: none;
+    font-size: 15px;
+    border-radius: 20px;
+    padding: 0.9rem;
+}
+
+.workday-button svg{
+    margin-right: 8px; /* или любое другое значение по вкусу */
+    vertical-align: center; /* чтобы иконка выровнялась по центру с текстом */
+}
+
+.worktask-button{
+    margin-top: 0.3rem;
+    background-color: #848484;
+    color: white;
+    border: none;
+    font-size: 15px;
+    border-radius: 20px;
+    min-width: 100%;
+    text-align: left;
+    padding: 0.9rem;
+}
+.worktask-button svg{
+    margin-right: 9px; /* или любое другое значение по вкусу */
+    vertical-align: center; /* чтобы иконка выровнялась по центру с текстом */
+}

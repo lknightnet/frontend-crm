@@ -1,0 +1,30 @@
+.nav-tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+    margin-bottom: 15px;
+}
+
+.oval-button {
+    border: 1px solid #999;
+    border-radius: 20px;
+    padding: 0.25rem 1rem;
+    flex: 1;
+    text-align: center;
+}
+
+.oval-button.active {
+    background: rgb(132, 132, 132);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .nav-tabs {
+        flex-direction: column;
+    }
+
+    .oval-button {
+        width: 100%; /* Кнопки на всю ширину контейнера */
+        font-size: 0.95rem;
+    }
+}

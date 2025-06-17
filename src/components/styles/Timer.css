@@ -1,0 +1,21 @@
+.wide-button-timer {
+    background-color: #ddd;
+    border-radius: 20px;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    width: 400px;
+}
+
+.modal {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.modal-content button {
+    margin-top: 1rem;
+}
