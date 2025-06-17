@@ -25,7 +25,7 @@ export const AuthProvider = ({children}) => {
             if (data.error === "token has expired" && refresh) {
                 try {
                     // Попытка обновления токена
-                    const refreshResponse = await fetch("http://localhost:8008/api/auth/refresh", {
+                    const refreshResponse = await fetch("http://crm-auth-service-1:8008/api/auth/refresh", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export const AuthProvider = ({children}) => {
 
         useEffect(() => {
             if (access) {
-                authFetch("http://localhost:8010/api/user/get", {
+                authFetch("http://crm-user-service-1:8010/api/user/get", {
                     method: "GET",
                 })
                     .then(res => res.json())

@@ -17,7 +17,7 @@ const SignUp = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8008/api/auth/signup", {
+            const response = await fetch("http://crm-auth-service-1:8008/api/auth/signup", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({email, password, name}),
