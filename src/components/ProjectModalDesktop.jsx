@@ -96,14 +96,14 @@ const ProjectModalDesktop = ({project, onClose}) => {
 
 
         try {
-            const response = await authFetch('http://gustav.website:8012/api/task/create', {
+            const response = await authFetch('http://gustav.website:8012/api/project/create', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(taskData),
             });
 
             if (response.ok) {
-                window.location.reload();
+                // window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при создании задачи:', errorData);
@@ -129,7 +129,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
             });
 
             if (response.ok) {
-                window.location.reload();
+                // window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при обновлении проекта:', errorData);
@@ -399,7 +399,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
                                 className="create-project-button"
                                 onClick={isEditMode ? handleUpdateProject : handleCreateProject}
                             >
-                                {isEditMode ? 'Сохранить изменения' : 'Создать проект'}
+                                {!isEditMode ? 'Сохранить изменения' : 'Создать проект'}
                             </button>
                         </div>
                     </>

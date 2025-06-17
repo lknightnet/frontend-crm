@@ -151,7 +151,7 @@ const TaskModalDesktop = ({task, onClose}) => {
 
 
         try {
-            const response = await authFetch('http:/gustav.website:8012/api/task/create', {
+            const response = await authFetch('http://gustav.website:8012/api/task/create', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(taskData),
@@ -201,7 +201,7 @@ const TaskModalDesktop = ({task, onClose}) => {
             });
 
             if (response.ok) {
-                window.location.reload();
+                // window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при обновлении задачи:', errorData);
