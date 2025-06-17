@@ -3,6 +3,6 @@
     src: url('./assets/fonts/Inter/static/Inter_18pt-Regular.ttf') format('opentype');
 }
 
-/*#webpack-dev-server-client-overlay{*/
-/*    display: none !important;*/
-/*}*/
+#webpack-dev-server-client-overlay {
+    display: none !important;
+}
