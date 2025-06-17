@@ -40,7 +40,7 @@ const ProfileModalDesktop = ({onClose}) => {
         console.log('Обновление профиля:', taskData);
 
         try {
-            const response = await authFetch('http://crm-user-service-1:8010/api/user/update', {
+            const response = await authFetch('http://gustav.website:8010/api/user/update', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(taskData),

@@ -18,7 +18,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
     const fetchProjectUsers = async (query) => {
         setIsLoading(true);
         try {
-            const response = await authFetch('http://crm-user-service-1:8010/api/user/get/like', {
+            const response = await authFetch('http://gustav.website:8010/api/user/get/like', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
 
 
         try {
-            const response = await authFetch('http://crm-project-service-1:8012/api/task/create', {
+            const response = await authFetch('http://gustav.website:8012/api/task/create', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(taskData),
@@ -188,8 +188,8 @@ const ProjectModalDesktop = ({project, onClose}) => {
 
         // Определяем URL и метод
         const url = isNew
-            ? "http://crm-project-service-1:8012/api/lists/create"
-            : "http://crm-project-service-1:8012/api/lists/update";
+            ? "http://gustav.website:8012/api/lists/create"
+            : "http://gustav.website:8012/api/lists/update";
 
         console.log(item);
 
@@ -217,7 +217,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
 
         const fetchProjectLists = async () => {
             try {
-                const response = await authFetch(`http://crm-project-service-1:8012/api/lists/get/project/${project.id}`);
+                const response = await authFetch(`http://gustav.website:8012/api/lists/get/project/${project.id}`);
                 if (!response.ok) throw new Error("Ошибка загрузки списков");
 
                 const data = await response.json();
@@ -255,7 +255,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
 
         if (isPersisted) {
             try {
-                const response = await authFetch(`http://crm-project-service-1:8012/api/lists/delete/${id}`, {
+                const response = await authFetch(`http://gustav.website:8012/api/lists/delete/${id}`, {
                     method: 'GET',
                 });
 

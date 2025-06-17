@@ -17,7 +17,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://crm-auth-service-1:8008/api/auth/login", {  // поменяй URL под свой бек
+            const response = await fetch("http://gustav.website:8008/api/auth/login", {  // поменяй URL под свой бек
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

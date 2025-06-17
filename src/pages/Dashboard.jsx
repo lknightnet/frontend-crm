@@ -82,31 +82,31 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        fetchAndSetProjects("http://crm-project-service-1:8012/api/project/get/list", setProjects);
+        fetchAndSetProjects("http://gustav.website:8012/api/project/get/list", setProjects);
     }, []);
 
     useEffect(() => {
-        fetchAndSetTasks("http://crm-project-service-1:8012/api/task/get/user", setTasks);
+        fetchAndSetTasks("http://gustav.website:8012/api/task/get/user", setTasks);
     }, []);
 
     useEffect(() => {
-        fetchAndSetTasks("http://crm-project-service-1:8012/api/task/get/expired", setOverdueTasksDeadline);
+        fetchAndSetTasks("http://gustav.website:8012/api/task/get/expired", setOverdueTasksDeadline);
     }, []);
 
     useEffect(() => {
-        fetchAndSetTasks("http://crm-project-service-1:8012/api/task/get/today", setTodayTasksDeadline);
+        fetchAndSetTasks("http://gustav.website:8012/api/task/get/today", setTodayTasksDeadline);
     }, []);
 
     useEffect(() => {
-        fetchAndSetTasks("http://crm-project-service-1:8012/api/task/get/thisweek", setThisWeekTasksDeadline);
+        fetchAndSetTasks("http://gustav.website:8012/api/task/get/thisweek", setThisWeekTasksDeadline);
     }, []);
 
     useEffect(() => {
-        fetchAndSetTasks("http://crm-project-service-1:8012/api/task/get/nextweek", setNextWeekTasksDeadline);
+        fetchAndSetTasks("http://gustav.website:8012/api/task/get/nextweek", setNextWeekTasksDeadline);
     }, []);
 
     useEffect(() => {
-        fetchAndSetTasks("http://crm-project-service-1:8012/api/task/get/notdeadline", setNoDueDateTasksDeadline);
+        fetchAndSetTasks("http://gustav.website:8012/api/task/get/notdeadline", setNoDueDateTasksDeadline);
     }, []);
 
     const [isModalOpen, setIsModalOpen] = useState(false);

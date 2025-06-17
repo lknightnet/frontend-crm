@@ -30,7 +30,7 @@ const TaskModalDesktop = ({task, onClose}) => {
     const fetchExecutors = async (query) => {
         setIsLoading(true);
         try {
-            const response = await authFetch('http://crm-user-service-1:8010/api/user/get/like', {
+            const response = await authFetch('http://gustav.website:8010/api/user/get/like', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const TaskModalDesktop = ({task, onClose}) => {
     };
 
     useEffect(() => {
-        fetchAndSetProjects("http://crm-project-service-1:8012/api/project/get/list", setProjects);
+        fetchAndSetProjects("http://gustav.website:8012/api/project/get/list", setProjects);
     }, []);
 
 
@@ -147,7 +147,7 @@ const TaskModalDesktop = ({task, onClose}) => {
 
 
         try {
-            const response = await authFetch('http://crm-project-service-1:8012/api/task/create', {
+            const response = await authFetch('http:/gustav.website:8012/api/task/create', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(taskData),
