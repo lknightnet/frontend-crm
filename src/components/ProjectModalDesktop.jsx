@@ -118,7 +118,9 @@ const ProjectModalDesktop = ({project, onClose}) => {
             project_id: project.id,
             name: title,
             description: description ? description : null,
-            project_users: selectedProjectUsers.map(ex => ex.id),
+            ...(selectedProjectUsers.length > 0 && {
+                project_users: selectedProjectUsers.map(ex => ex.id),
+            }),
         };
 
         try {
@@ -398,6 +400,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
                             <button
                                 className="create-project-button"
                                 onClick={isEditMode ? handleUpdateProject : handleCreateProject}
+                                disabled={!isEditAllowed}
                             >
                                 {!isEditMode ? 'Сохранить изменения' : 'Создать проект'}
                             </button>

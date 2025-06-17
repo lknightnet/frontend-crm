@@ -8,8 +8,8 @@ import {AuthProvider, useAuth} from "./context/AuthContext";
 import PrivateRoute from "./routes/PrivateRoute";
 
 function DefaultRedirect() {
-    const { access } = useAuth();
-    return access ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />;
+    const { user } = useAuth();
+    return user ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />;
 }
 function App() {
     return (
@@ -19,7 +19,6 @@ function App() {
                     <Route path="/" element={<DefaultRedirect />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
-                    {/* Защищённый маршрут */}
                     <Route path="/dashboard" element={
                         <PrivateRoute>
                             <Dashboard />
