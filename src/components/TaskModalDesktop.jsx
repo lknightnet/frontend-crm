@@ -23,7 +23,7 @@ const TaskModalDesktop = ({task, onClose}) => {
 
     useEffect(() => {
         if (user && user.id && user.name) {
-            setSelectedExecutors([{ id: user.id, name: user.name }]);
+            setSelectedExecutors([{id: user.id, name: user.name}]);
         }
     }, [user]);
 
@@ -122,7 +122,6 @@ const TaskModalDesktop = ({task, onClose}) => {
     }, []);
 
 
-
     const [title, setTitle] = useState(task?.name || "");
     const [description, setDescription] = useState(task?.description || "");
     const handleCreateTask = async () => {
@@ -131,11 +130,16 @@ const TaskModalDesktop = ({task, onClose}) => {
             description: description ? description : null, // *string, может быть null
             level_priority: (() => {
                 switch (priority) {
-                    case 'low': return 1;
-                    case 'medium': return 2;
-                    case 'high': return 3;
-                    case 'critical': return 4;
-                    default: return 1;
+                    case 'low':
+                        return 1;
+                    case 'medium':
+                        return 2;
+                    case 'high':
+                        return 3;
+                    case 'critical':
+                        return 4;
+                    default:
+                        return 1;
                 }
             })(),
             deadline: deadline ? deadline.toISOString() : null, // *time.Time, в ISO формате или null
@@ -161,6 +165,49 @@ const TaskModalDesktop = ({task, onClose}) => {
             }
         } catch (error) {
             console.error('Сетевая ошибка:', error);
+        }
+    };
+    const handleUpdateTask = async () => {
+        const taskData = {
+            task_id: task.id,
+            name: title ? title : null,
+            description: description ? description : null,
+            level_priority: (() => {
+                switch (priority) {
+                    case 'low':
+                        return 1;
+                    case 'medium':
+                        return 2;
+                    case 'high':
+                        return 3;
+                    case 'critical':
+                        return 4;
+                    default:
+                        return 1;
+                }
+            })(),
+            deadline: deadline ? deadline.toISOString() : null,
+            project_id: selectedProject ? selectedProject.id : null,
+            executors: selectedExecutors.length > 0
+                ? selectedExecutors.map((ex) => ex.id)
+                : null,
+        };
+
+        try {
+            const response = await authFetch('http://gustav.website:8012/api/task/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(taskData),
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Ошибка при обновлении задачи:', errorData);
+            }
+        } catch (error) {
+            console.error('Сетевая ошибка при обновлении задачи:', error);
         }
     };
 
@@ -310,7 +357,7 @@ const TaskModalDesktop = ({task, onClose}) => {
                     </div>
                     <div className="projects-row">
                         <p className="task-label">Проект</p>
-                        <div style={{ width: '100%', maxWidth: 270 }}>
+                        <div style={{width: '100%', maxWidth: 270}}>
                             <Select
                                 classNamePrefix="project-select"
                                 options={projects.map((project) => ({
@@ -341,11 +388,11 @@ const TaskModalDesktop = ({task, onClose}) => {
                         </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+                <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem'}}>
                     <button
                         className="create-task-button"
-                        onClick={handleCreateTask}
-                        disabled={!selectedProject}  // кнопка неактивна, если проект не выбран
+                        onClick={isEditMode ? handleUpdateTask : handleCreateTask}
+                        disabled={!selectedProject}
                         style={{
                             cursor: !selectedProject ? 'not-allowed' : 'pointer',
                             opacity: !selectedProject ? 0.5 : 1,

@@ -113,6 +113,32 @@ const ProjectModalDesktop = ({project, onClose}) => {
         }
     };
 
+    const handleUpdateProject = async () => {
+        const projectData = {
+            project_id: project.id,
+            name: title,
+            description: description ? description : null,
+            project_users: selectedProjectUsers.map(ex => ex.id),
+        };
+
+        try {
+            const response = await authFetch(`http://gustav.website:8012/api/project/update`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(projectData),
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Ошибка при обновлении проекта:', errorData);
+            }
+        } catch (error) {
+            console.error('Сетевая ошибка:', error);
+        }
+    };
+
     const isEditMode = project !== null;
     const isEditAllowed = !project || (user && project && user.id === project.created_id);
 
@@ -371,9 +397,9 @@ const ProjectModalDesktop = ({project, onClose}) => {
                         <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '1.5rem'}}>
                             <button
                                 className="create-project-button"
-                                onClick={handleCreateProject}
+                                onClick={isEditMode ? handleUpdateProject : handleCreateProject}
                             >
-                                Создать проект
+                                {isEditMode ? 'Сохранить изменения' : 'Создать проект'}
                             </button>
                         </div>
                     </>

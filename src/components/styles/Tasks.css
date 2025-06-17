@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 .task-toolbar {
     display: flex;
     gap: 10px;
@@ -201,11 +207,22 @@
     align-items: flex-start;
 }
 
+.task-deadline-columns,
+.task-deadline-header {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 .task-column, .task-deadline-cell {
     display: flex;
     flex-direction: column;
     gap: 10px;
     /*min-height: 150px;*/
+}
+
+.task-deadline-cell {
+    min-width: 0;
+    word-break: break-word;
 }
 
 .task-box {
@@ -219,7 +236,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
-    max-width: 300px;
+    width: 100%;
+    max-width: none;
     transition: background 0.2s;
 }
 
@@ -237,8 +255,9 @@
     color: #333;
     border: 1px solid #999;
     border-radius: 24px;
-    max-width: 300px;
     background-color: transparent;
+    width: 100%;
+    max-width: none;
 }
 
 .task-deadline-label .dot {
