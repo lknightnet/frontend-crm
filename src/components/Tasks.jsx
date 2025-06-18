@@ -1,6 +1,7 @@
 import React, {useRef, useState} from "react";
 import "./styles/Tasks.css"
 import TaskModalDesktop from "./TaskModalDesktop";
+import {useAuth} from "../context/AuthContext";
 
 const Tasks = ({
                    tasks = [],
@@ -12,6 +13,7 @@ const Tasks = ({
                }) => {
     const [activeTool, setActiveTool] = useState('Список');
     const [currentPage, setCurrentPage] = useState(1);
+    const {authFetch} = useAuth();
 
     const tasksPerPageList = 16;
     const totalPagesList = Math.max(1, Math.ceil(tasks.length / tasksPerPageList));
@@ -72,22 +74,8 @@ const Tasks = ({
     const [selectedTask, setSelectedTask] = useState(null);
 
 
-    const [time, setTime] = useState(0);
-    const [running, setRunning] = useState(false);
-    const timerRef = useRef(null);
-
-    const toggle = () => {
-        if (running) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
-            setRunning(false);
-        } else {
-            timerRef.current = setInterval(() => {
-                setTime(prev => prev + 1);
-            }, 1000);
-            setRunning(true);
-        }
-    };
+    const [timers, setTimers] = useState({}); // { [taskId]: { time, running, timerId } }
+    const timerRefs = useRef({}); // хранит setInterval ID для каждой задачи
 
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60).toString().padStart(2, '0');
@@ -96,6 +84,124 @@ const Tasks = ({
     };
 
 
+
+    const startTimer = async (taskId) => {
+        if (timers[taskId]?.running) return;
+
+        try {
+            const res = await fetch('/api/timers/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_id: taskId }),
+            });
+            if (!res.ok) throw new Error('Ошибка старта таймера');
+
+            const data = await res.json();
+            const timerId = data.id;
+
+            timerRefs.current[taskId] = setInterval(() => {
+                setTimers(prev => ({
+                    ...prev,
+                    [taskId]: {
+                        ...prev[taskId],
+                        time: (prev[taskId]?.time ?? 0) + 1,
+                        running: true,
+                        timerId,
+                    }
+                }));
+            }, 1000);
+
+            setTimers(prev => ({
+                ...prev,
+                [taskId]: {
+                    time: prev[taskId]?.time ?? 0,
+                    running: true,
+                    timerId,
+                }
+            }));
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const stopTimer = async (taskId) => {
+        if (!timers[taskId]?.running) return;
+
+        try {
+            const res = await fetch('/api/timers/stop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_id: taskId }),
+            });
+            if (!res.ok) throw new Error('Ошибка остановки таймера');
+
+            clearInterval(timerRefs.current[taskId]);
+            timerRefs.current[taskId] = null;
+
+            setTimers(prev => ({
+                ...prev,
+                [taskId]: {
+                    ...prev[taskId],
+                    running: false,
+                }
+            }));
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+
+
+    const resumeTimer = async (taskId) => {
+        if (timers[taskId]?.running) return;
+        const timerId = timers[taskId]?.timerId;
+        if (!timerId) {
+            console.error('Нет ID таймера для резюма');
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/timers/${timerId}/resume`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (!res.ok) throw new Error('Ошибка резюма таймера');
+
+            timerRefs.current[taskId] = setInterval(() => {
+                setTimers(prev => ({
+                    ...prev,
+                    [taskId]: {
+                        ...prev[taskId],
+                        time: (prev[taskId]?.time ?? 0) + 1,
+                        running: true,
+                    }
+                }));
+            }, 1000);
+
+            setTimers(prev => ({
+                ...prev,
+                [taskId]: {
+                    ...prev[taskId],
+                    running: true,
+                }
+            }));
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const handleButtonClick = (taskId) => {
+        const timer = timers[taskId];
+        if (!timer || (!timer.running && timer.time === 0)) {
+            startTimer(taskId);
+        } else if (timer.running) {
+            stopTimer(taskId);
+        } else {
+            resumeTimer(taskId);
+        }
+    };
+
+    const activeTaskId = Object.entries(timers).find(([_, t]) => t.running)?.[0];
     return (
         <div className={`task-container ${activeTool === 'Сроки' ? 'deadline-mode' : ''}`}>
             <h3>Мои задачи</h3>
@@ -114,7 +220,8 @@ const Tasks = ({
                 <button className="action-button" onClick={() => {
                     setSelectedTask(null);
                     setIsModalOpen(true);
-                }}>Создать</button>
+                }}>Создать
+                </button>
             </div>
 
             {activeTool === 'Список' && (
@@ -128,22 +235,34 @@ const Tasks = ({
                     </div>
 
                     {currentTasksList.length > 0 ? (
-                        currentTasksList.map((task, index) => (
-                            <div key={index} className="task-row" onClick={() => {
-                                setSelectedTask(task);
-                                setIsModalOpen(true);
-                            }}>
-                                <div className="task-title">{task.name}</div>
-                                <div className="task-description">{task.description}</div>
-                                <div className="task-status">{task.status}</div>
-                                <button className="start-button" onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log("Задача начата");
-                                    toggle();
-                                }}>{running ? formatTime(time) : 'Начать'}
-                                </button>
-                            </div>
-                        ))
+                        currentTasksList.map((task, index) => {
+                            const timer = timers[task.id] || {time: 0, running: false};
+                            const isDisabled = activeTaskId && activeTaskId !== task.id.toString();
+                            return (
+                                <div key={index} className="task-row" onClick={() => {
+                                    setSelectedTask(task);
+                                    setIsModalOpen(true);
+                                }}>
+                                    <div className="task-title">{task.name}</div>
+                                    <div className="task-description">{task.description}</div>
+                                    <div className="task-status">{task.status}</div>
+                                    <button
+                                        disabled={isDisabled}
+                                        className="start-button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleButtonClick(task.id);
+                                        }}
+                                    >
+                                        {timer.running
+                                            ? formatTime(timer.time)
+                                            : timer.time === 0
+                                                ? 'Начать'
+                                                : `Продолжить (${formatTime(timer.time)})`}
+                                    </button>
+                                </div>
+                            );
+                        })
                     ) : (
                         <div className="task-empty">Нет задач</div>
                     )}
@@ -230,7 +349,7 @@ const Tasks = ({
                                     <div className="task-deadline-mobile-column">
                                         {tasks.length > 0 ? (
                                             tasks.map((task, i) => (
-                                                <div key={i} className="task-box"  onClick={() => {
+                                                <div key={i} className="task-box" onClick={() => {
                                                     setSelectedTask(task);
                                                     setIsModalOpen(true);
                                                 }}>
