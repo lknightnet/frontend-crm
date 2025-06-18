@@ -9,14 +9,15 @@
 
 .modal-timer {
     position: absolute;
-    width: 400px;
+    width: 500px;
     background-color: #C4C4C4;
-    border-radius: 8px;
+    border-radius: 20px;
     padding: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1000;
     font-size: 15px;
     position: relative; /* Добавь, чтобы позиционировать timer-text относительно модального окна */
+    margin-top: 10px;
 }
 
 .timer-text {
@@ -28,42 +29,168 @@
 
 }
 
-.workday-text{
+.workday-text {
     font-size: 15px;
 }
 
-.workday-text-tasks{
+.workday-text-tasks {
     margin-top: 10px;
-    font-size: 13px;
+    font-size: 16px;
+    margin-left: 5px;
 }
 
-.workday-button{
+.workday-button {
     margin-top: 0.3rem;
     background-color: #848484;
     color: white;
     border: none;
-    font-size: 15px;
+    font-size: 16px;
     border-radius: 20px;
-    padding: 0.9rem;
+    padding: 0.7rem;
 }
 
-.workday-button svg{
+.workday-button svg {
     margin-right: 8px; /* или любое другое значение по вкусу */
     vertical-align: center; /* чтобы иконка выровнялась по центру с текстом */
 }
 
-.worktask-button{
+.worktask-button {
     margin-top: 0.3rem;
     background-color: #848484;
     color: white;
     border: none;
-    font-size: 15px;
+    font-size: 16px;
     border-radius: 20px;
     min-width: 100%;
     text-align: left;
-    padding: 0.9rem;
+    padding: 0.7rem;
 }
-.worktask-button svg{
+
+.worktask-button svg {
     margin-right: 9px; /* или любое другое значение по вкусу */
     vertical-align: center; /* чтобы иконка выровнялась по центру с текстом */
+}
+
+.tab-container {
+    background-color: #fff;
+    margin-top: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0 20px 20px 20px;
+    min-height: 150px;
+}
+
+.tab-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px 20px 0 0;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    top: 17px;
+    font-size: 16px;
+    z-index: 3;
+}
+
+.tab.active {
+    background-color: #fff;
+    z-index: 3;
+}
+
+.task-on-day {
+    padding: 0.7rem;
+    border-radius: 20px;
+    background-color: #DBDBDB;
+    color: black;
+}
+
+/*.input-searcher-modal-timer{*/
+/*    border-radius: 20px;*/
+/*    padding: 0.7rem;*/
+/*    width: 90%;*/
+/*}*/
+.input-row {
+     display: flex;
+     align-items: center;
+     gap: 8px; /* отступ между инпутами */
+     margin-top: 10px;
+ }
+
+.input-searcher-modal-timer {
+    flex-grow: 1;
+    border-radius: 20px;
+    padding: 0.7rem;
+    font-size: 16px;
+    border: 1px solid #353535;
+}
+
+.input-button-modal-timer {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #C4C4C4;
+    color: #353535;
+    border: none;
+    min-width: 40px;
+}
+
+.list-tasks {
+    max-height: 200px;       /* Ограничение высоты, чтобы список не расползался */
+    overflow-y: auto;        /* Вертикальная прокрутка, если задач много */
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    margin-bottom: 15px;
+}
+
+.list-tasks.empty {
+    all: unset;          /* Сбрасываем все стили */
+    display: block;      /* или inline-block, чтобы контейнер не исчез */
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    overflow: visible;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item:hover {
+    background-color: #f0f0f0;
+}
+
+.task-item p {
+    margin: 0;
+    flex-grow: 1;
+    user-select: none;
+}
+
+.task-item input[type="checkbox"] {
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }

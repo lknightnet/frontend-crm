@@ -124,20 +124,22 @@ const Dashboard = () => {
             setShowTimerModal(true);
         }
     };
+
+    const [tasksPlan, setTasksPlan] = useState([]);
+
+
     return (
         <div className={`dashboard-container ${isMenuOpen ? "menu-open" : ""}`}>
             <Sidebar buttonsList={buttons} isMenuOpen={isMenuOpen} toggleMenu={toggleMenu}/>
 
             <div className="main-content">
                 <div className="top-bar">
-                    <Searcher></Searcher>
+                    <Searcher project={projects} task={tasks}/>
                     <div className="top-buttons">
-                        <Timer onClick={handleTimerClick} buttonRef={buttonRef} />
-                        <Calendar onClick={setShowCalendarModal}></Calendar>
+                        <Timer onClick={handleTimerClick} buttonRef={buttonRef}/>
+                        <Calendar onClick={setShowCalendarModal}/>
                     </div>
-                    <div className="user-button" onClick={() => {
-                        setIsModalOpen(true);
-                    }}>
+                    <div className="user-button" onClick={() => setIsModalOpen(true)}>
                         {user ? user.name : "Гость"}
                     </div>
                 </div>
@@ -161,6 +163,9 @@ const Dashboard = () => {
                         onClick={setShowTimerModal}
                         text={"Рабочий день"}
                         position={modalPosition}
+                        tasks={tasks}
+                        tasksPlan={tasksPlan}
+                        setTasksPlan={setTasksPlan}
                     />
                 )}
 

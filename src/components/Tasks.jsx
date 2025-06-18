@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import "./styles/Tasks.css"
 import TaskModalDesktop from "./TaskModalDesktop";
 
@@ -70,6 +70,32 @@ const Tasks = ({
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
+
+
+    const [time, setTime] = useState(0);
+    const [running, setRunning] = useState(false);
+    const timerRef = useRef(null);
+
+    const toggle = () => {
+        if (running) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+            setRunning(false);
+        } else {
+            timerRef.current = setInterval(() => {
+                setTime(prev => prev + 1);
+            }, 1000);
+            setRunning(true);
+        }
+    };
+
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+        const seconds = (time % 60).toString().padStart(2, '0');
+        return `${minutes}:${seconds}`;
+    };
+
+
     return (
         <div className={`task-container ${activeTool === 'Сроки' ? 'deadline-mode' : ''}`}>
             <h3>Мои задачи</h3>
@@ -111,10 +137,10 @@ const Tasks = ({
                                 <div className="task-description">{task.description}</div>
                                 <div className="task-status">{task.status}</div>
                                 <button className="start-button" onClick={(e) => {
-                                    e.stopPropagation(); // предотвратим открытие модалки
-                                    // Другая логика, например: начать задачу
+                                    e.stopPropagation();
                                     console.log("Задача начата");
-                                }}>Начать
+                                    toggle();
+                                }}>{running ? formatTime(time) : 'Начать'}
                                 </button>
                             </div>
                         ))

@@ -12,6 +12,11 @@ const ProjectModalDesktop = ({project, onClose}) => {
     const {authFetch, user} = useAuth();
     const [activeTab, setActiveTab] = useState('info');
 
+    // useEffect(() => {
+    //     if (user && user.id && user.name) {
+    //         setSelectedProjectUsers([{id: user.id, name: user.name}]);
+    //     }
+    // }, [user]);
 
     const debounceTimeout = useRef(null);
 
@@ -89,7 +94,9 @@ const ProjectModalDesktop = ({project, onClose}) => {
         const taskData = {
             name: title,
             description: description ? description : null,
-            project_users: selectedProjectUsers.map(ex => ex.id),
+            ...(selectedProjectUsers.length > 0 && {
+                project_users: selectedProjectUsers.map(ex => ex.id),
+            }),
         };
 
         console.log('Создаётся задача:', taskData);
