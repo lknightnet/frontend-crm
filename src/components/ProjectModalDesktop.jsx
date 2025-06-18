@@ -110,7 +110,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
             });
 
             if (response.ok) {
-                // window.location.reload();
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при создании задачи:', errorData);
@@ -138,7 +138,7 @@ const ProjectModalDesktop = ({project, onClose}) => {
             });
 
             if (response.ok) {
-                // window.location.reload();
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при обновлении проекта:', errorData);

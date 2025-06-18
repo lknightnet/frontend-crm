@@ -158,7 +158,7 @@ const TaskModalDesktop = ({task, onClose}) => {
             });
 
             if (response.ok) {
-                // window.location.reload(); // 🔄 Перезагрузка страницы
+                window.location.reload(); // 🔄 Перезагрузка страницы
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при создании задачи:', errorData);
@@ -201,7 +201,7 @@ const TaskModalDesktop = ({task, onClose}) => {
             });
 
             if (response.ok) {
-                // window.location.reload();
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Ошибка при обновлении задачи:', errorData);
